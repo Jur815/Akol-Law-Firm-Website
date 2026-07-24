@@ -1,8 +1,8 @@
-export default function SectionHeading({ eyebrow, title, description }) {
+export default function SectionHeading({ eyebrow, title, description, as: Heading = "h2" }) {
   return (
     <div className="section-heading">
       <p className="eyebrow">{eyebrow}</p>
-      <h2>{title}</h2>
+      <Heading>{title}</Heading>
       {description ? <p>{description}</p> : null}
     </div>
   );

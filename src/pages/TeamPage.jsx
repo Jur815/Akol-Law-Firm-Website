@@ -9,6 +9,7 @@ export default function TeamPage() {
           eyebrow="Our Team"
           title="A legal team built on trust, strategy, and discipline"
           description="Presenting leadership and legal capability clearly online helps build confidence before the first consultation."
+          as="h1"
         />
 
         <div className="cards-grid">

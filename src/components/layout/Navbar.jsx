@@ -47,7 +47,9 @@ export default function Navbar() {
           <button
             onClick={() => setMobileOpen((v) => !v)}
             className="mobile-menu-btn"
-            aria-label="Open menu"
+            aria-expanded={mobileOpen}
+            aria-controls="mobile-navigation"
+            aria-label={mobileOpen ? "Close navigation menu" : "Open navigation menu"}
           >
             <Menu size={22} />
           </button>
@@ -56,7 +58,7 @@ export default function Navbar() {
 
       {mobileOpen && (
         <div className="mobile-nav-wrap">
-          <div className="container mobile-nav">
+          <div className="container mobile-nav" id="mobile-navigation">
             {navItems.map((item) => (
               <NavLink
                 key={item.to}

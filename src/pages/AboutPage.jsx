@@ -9,6 +9,7 @@ export default function AboutPage() {
           eyebrow="About The Firm"
           title="A premier law firm focused on strategy, integrity, and results"
           description="Akol For Legal Services (ALS) provides strategic legal counsel and robust representation designed to meet the realities of modern business, regulation, and dispute resolution in South Sudan."
+          as="h1"
         />
 
         <div className="two-column cards-top">

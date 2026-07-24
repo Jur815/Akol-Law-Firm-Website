@@ -413,6 +413,7 @@ select {
 }
 
 /* Section Heading */
+.section-heading h1,
 .section-heading h2 {
   margin: 14px 0 0;
   font-size: clamp(2rem, 4vw, 3rem);

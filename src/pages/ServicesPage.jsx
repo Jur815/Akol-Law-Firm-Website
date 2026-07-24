@@ -10,6 +10,7 @@ export default function ServicesPage() {
           eyebrow="Practice Areas"
           title="Specialized legal services tailored to client realities"
           description="ALS provides practical and strategic legal support across multiple sectors and high-value matters."
+          as="h1"
         />
 
         <div className="service-detail-list">

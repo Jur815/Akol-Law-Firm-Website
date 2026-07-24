@@ -81,6 +81,7 @@ export default function ContactPage() {
             eyebrow="Contact Us"
             title="Speak to a legal expert today"
             description="Whether you need corporate advisory, dispute support, labor law assistance, or sector-specific legal counsel, ALS is ready to support your next step."
+            as="h1"
           />
 
           <div className="contact-info-list">
@@ -120,10 +121,16 @@ export default function ContactPage() {
         </div>
 
         <div className="form-card">
-          <form onSubmit={handleSubmit}>
+          <form
+            onSubmit={handleSubmit}
+            aria-describedby={
+              formStatus.message ? "contact-form-status contact-form-note" : "contact-form-note"
+            }
+          >
             <div className="form-group">
-              <label>Full Name</label>
+              <label htmlFor="contact-name">Full Name</label>
               <input
+                id="contact-name"
                 type="text"
                 name="name"
                 value={formData.name}
@@ -135,8 +142,9 @@ export default function ContactPage() {
 
             <div className="form-row">
               <div className="form-group">
-                <label>Email</label>
+                <label htmlFor="contact-email">Email</label>
                 <input
+                  id="contact-email"
                   type="email"
                   name="email"
                   value={formData.email}
@@ -147,8 +155,9 @@ export default function ContactPage() {
               </div>
 
               <div className="form-group">
-                <label>Phone</label>
+                <label htmlFor="contact-phone">Phone</label>
                 <input
+                  id="contact-phone"
                   type="text"
                   name="phone"
                   value={formData.phone}
@@ -160,8 +169,13 @@ export default function ContactPage() {
             </div>
 
             <div className="form-group">
-              <label>Service Needed</label>
-              <select name="service" value={formData.service} onChange={handleChange}>
+              <label htmlFor="contact-service">Service Needed</label>
+              <select
+                id="contact-service"
+                name="service"
+                value={formData.service}
+                onChange={handleChange}
+              >
                 {practiceAreas.map((item) => (
                   <option key={item.slug}>{item.title}</option>
                 ))}
@@ -169,8 +183,9 @@ export default function ContactPage() {
             </div>
 
             <div className="form-group">
-              <label>Message</label>
+              <label htmlFor="contact-message">Message</label>
               <textarea
+                id="contact-message"
                 rows={5}
                 name="message"
                 value={formData.message}
@@ -184,17 +199,24 @@ export default function ContactPage() {
               type="submit"
               className="btn btn-gold full-width"
               disabled={formStatus.type === "loading"}
+              aria-disabled={formStatus.type === "loading"}
+              aria-busy={formStatus.type === "loading"}
             >
               {formStatus.type === "loading" ? "Sending..." : "Send Consultation Request"}
             </button>
 
             {formStatus.message ? (
-              <p className={`form-note form-note-${formStatus.type}`} role="status">
+              <p
+                id="contact-form-status"
+                className={`form-note form-note-${formStatus.type}`}
+                role={formStatus.type === "error" ? "alert" : "status"}
+                aria-live={formStatus.type === "error" ? "assertive" : "polite"}
+              >
                 {formStatus.message}
               </p>
             ) : null}
 
-            <p className="form-note">
+            <p className="form-note" id="contact-form-note">
               By submitting this form, your consultation request will be sent securely to our legal team.
             </p>
           </form>
