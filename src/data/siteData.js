@@ -9,9 +9,12 @@ import {
 export const firmContact = {
   name: "Akol For Legal Services (ALS)",
   location: "Juba, South Sudan",
-  email: "info@akollegalservices.com",
-  phone: "+211 XXX XXX XXX",
-  whatsapp: "211XXXXXXXXX",
+  email: "info2026akollegalservices@gmail.com",
+  phone: "+211 912 374 000",
+  whatsappDisplay: "+211 912 374 000",
+  whatsapp: "211912374000",
+  whatsappMessage:
+    "Hello Akol For Legal Services, I would like to inquire about your legal services.",
   workingHours: "Monday - Friday: 8:30 AM - 5:00 PM",
 };
 
@@ -84,7 +87,7 @@ export const industries = [
 
 export const team = [
   {
-    name: "Barrister Marko Akol",
+    name: "Marco Akol Deng",
     role: "Founder & Lead Counsel",
     bio: "Leading the firm with a focus on strategic legal advisory, dispute resolution, and corporate legal excellence.",
   },

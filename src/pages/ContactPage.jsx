@@ -60,6 +60,19 @@ ${formData.message}`
             </div>
 
             <div className="contact-info-card">
+              <p>WhatsApp</p>
+              <a
+                href={`https://wa.me/${firmContact.whatsapp}?text=${encodeURIComponent(
+                  firmContact.whatsappMessage
+                )}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {firmContact.whatsappDisplay}
+              </a>
+            </div>
+
+            <div className="contact-info-card">
               <p>Working Hours</p>
               <h3>{firmContact.workingHours}</h3>
             </div>
