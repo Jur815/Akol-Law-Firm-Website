@@ -720,6 +720,14 @@ select {
   font-size: 0.9rem;
 }
 
+.form-note-success {
+  color: #86efac;
+}
+
+.form-note-error {
+  color: #fca5a5;
+}
+
 /* WhatsApp */
 .whatsapp-button {
   position: fixed;

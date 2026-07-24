@@ -10,27 +10,67 @@ export default function ContactPage() {
     service: practiceAreas[0].title,
     message: "",
   });
+  const [formStatus, setFormStatus] = useState({
+    type: "idle",
+    message: "",
+  });
 
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormStatus({ type: "idle", message: "" });
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const subject = encodeURIComponent(`Legal Consultation Request - ${formData.service}`);
-    const body = encodeURIComponent(
-      `Full Name: ${formData.name}
-Email: ${formData.email}
-Phone: ${formData.phone}
-Service Needed: ${formData.service}
+    setFormStatus({
+      type: "loading",
+      message: "Sending your consultation request...",
+    });
 
-Message:
-${formData.message}`
-    );
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          subject: `Legal Consultation Request - ${formData.service}`,
+          message: formData.message,
+          company: "",
+        }),
+      });
 
-    window.location.href = `mailto:${firmContact.email}?subject=${subject}&body=${body}`;
+      const result = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        throw new Error(result.message || "Unable to send your request right now.");
+      }
+
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        service: practiceAreas[0].title,
+        message: "",
+      });
+      setFormStatus({
+        type: "success",
+        message: "Your consultation request has been sent successfully.",
+      });
+    } catch (error) {
+      setFormStatus({
+        type: "error",
+        message:
+          error instanceof Error
+            ? error.message
+            : "Unable to send your request right now.",
+      });
+    }
   };
 
   return (
@@ -140,12 +180,22 @@ ${formData.message}`
               />
             </div>
 
-            <button type="submit" className="btn btn-gold full-width">
-              Send Consultation Request
+            <button
+              type="submit"
+              className="btn btn-gold full-width"
+              disabled={formStatus.type === "loading"}
+            >
+              {formStatus.type === "loading" ? "Sending..." : "Send Consultation Request"}
             </button>
 
+            {formStatus.message ? (
+              <p className={`form-note form-note-${formStatus.type}`} role="status">
+                {formStatus.message}
+              </p>
+            ) : null}
+
             <p className="form-note">
-              By submitting this form, your email application will open with your consultation request prepared for sending.
+              By submitting this form, your consultation request will be sent securely to our legal team.
             </p>
           </form>
         </div>
