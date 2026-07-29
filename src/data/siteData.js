@@ -10,7 +10,8 @@ import {
 export const firmContact = {
   name: "Akol For Legal Services (ALS)",
   location: "Juba, South Sudan",
-  email: "info2026akollegalservices@gmail.com",
+  // Public-facing placeholder until the als.com mailbox is purchased and configured.
+  email: "info@als.com",
   phone: "+211 912 374 000",
   whatsappDisplay: "+211 912 374 000",
   whatsapp: "211912374000",
