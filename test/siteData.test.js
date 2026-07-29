@@ -36,6 +36,19 @@ test("includes Marco Ajou Aleu's office manager and legal clerk profile", () => 
   assert.equal(marcoAjou.name, "Marco Ajou Aleu");
   assert.equal(marcoAjou.role, "Office Manager & Legal Clerk");
   assert.ok(marcoAjou.summary.includes("Legal clerical support"));
+  assert.ok(marcoAjou.summary.includes("ICT-supported office systems"));
+  assert.ok(marcoAjou.summary.includes("Database maintenance"));
+  assert.ok(
+    marcoAjou.shortBio.includes(
+      "records management, database maintenance, office systems, communication, and efficient administrative operations",
+    ),
+  );
+  assert.deepEqual(marcoAjou.qualificationsExperience, [
+    "High School Graduate",
+    "ICT Professional",
+    "Five years of experience in Information and Communication Technology",
+    "Two years of experience in office management and clerical administration",
+  ]);
   assert.ok(
     marcoAjou.responsibilities.some(
       (group) =>

@@ -51,6 +51,7 @@ function ExecutiveProfile({ member }) {
   const summaryId = `${member.slug}-summary`;
   const leadershipId = `${member.slug}-leadership`;
   const responsibilitiesId = `${member.slug}-responsibilities`;
+  const qualificationsExperienceId = `${member.slug}-qualifications-experience`;
   const qualificationsId = `${member.slug}-qualifications`;
   const expertiseId = `${member.slug}-expertise`;
 
@@ -134,6 +135,19 @@ function ExecutiveProfile({ member }) {
         </div>
 
         <aside className="profile-aside" aria-label={`${member.name} professional details`}>
+          {member.qualificationsExperience ? (
+            <section className="profile-section-block" aria-labelledby={qualificationsExperienceId}>
+              <h4 id={qualificationsExperienceId}>Qualifications and Experience</h4>
+              <div className="qualification-grid">
+                {member.qualificationsExperience.map((item) => (
+                  <div key={item} className="qualification-card">
+                    {item}
+                  </div>
+                ))}
+              </div>
+            </section>
+          ) : null}
+
           {member.qualifications ? (
             <section className="profile-section-block" aria-labelledby={qualificationsId}>
               <h4 id={qualificationsId}>Professional Qualifications</h4>

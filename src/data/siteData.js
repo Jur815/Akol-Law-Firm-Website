@@ -152,7 +152,7 @@ export const team = [
     profileLabel: "Professional Profile",
     initials: "MAA",
     shortBio:
-      "Marco Ajou Aleu oversees the firm's administrative operations while providing essential legal and clerical support. His responsibilities include office management, client communication, document and records management, legal research support, staff coordination, and maintaining efficient day-to-day operations that enable the firm to deliver professional legal services.",
+      "Marco Ajou Aleu oversees the firm's administrative operations while providing essential legal and clerical support. His ICT background strengthens records management, database maintenance, office systems, communication, and efficient administrative operations.",
     bio: [
       "Marco Ajou Aleu serves as the Office Manager and Legal Clerk at Akol For Legal Services, where he plays a vital role in ensuring the firm's daily operations are efficient, organised, and client-focused.",
       "He combines strong administrative management with dependable legal support, helping the firm maintain high professional standards while delivering quality legal services to clients.",
@@ -162,10 +162,18 @@ export const team = [
     summary: [
       "Administrative management",
       "Legal clerical support",
+      "ICT-supported office systems",
       "Client service coordination",
       "Document and records management",
+      "Database maintenance",
       "Staff coordination",
       "Operational support",
+    ],
+    qualificationsExperience: [
+      "High School Graduate",
+      "ICT Professional",
+      "Five years of experience in Information and Communication Technology",
+      "Two years of experience in office management and clerical administration",
     ],
     responsibilities: [
       {
