@@ -573,6 +573,16 @@ select {
   font-size: 0.92rem;
 }
 
+.compact-pills {
+  margin-top: 18px;
+  gap: 10px;
+}
+
+.compact-pills .pill {
+  font-size: 0.84rem;
+  padding: 8px 12px;
+}
+
 .large-card {
   padding: 32px;
 }
@@ -603,11 +613,30 @@ select {
   gap: 18px;
 }
 
+.service-feature-list,
+.profile-list {
+  display: grid;
+  gap: 10px;
+  margin: 18px 0 0;
+  padding-left: 20px;
+  color: #e2e8f0;
+  line-height: 1.7;
+}
+
+.service-feature-list li::marker,
+.profile-list li::marker {
+  color: var(--gold);
+}
+
 /* Team */
 .team-card {
   padding: 30px;
   background: rgba(2, 6, 23, 0.8);
   box-shadow: var(--shadow);
+}
+
+.featured-profile-card {
+  grid-column: span 3;
 }
 
 .avatar {
@@ -626,6 +655,42 @@ select {
 .team-role {
   color: var(--gold) !important;
   margin-top: 8px;
+}
+
+.team-credentials {
+  color: #fde68a !important;
+  margin-top: 6px;
+  font-weight: 700;
+}
+
+.profile-copy {
+  display: grid;
+  gap: 12px;
+  margin-top: 22px;
+}
+
+.profile-copy p {
+  margin: 0;
+}
+
+.profile-section {
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+}
+
+.profile-section h4 {
+  margin: 0;
+  color: white;
+  font-size: 1.05rem;
+}
+
+.leadership-card h3 {
+  margin-top: 18px;
+}
+
+.leadership-card .btn {
+  margin-top: 24px;
 }
 
 /* Contact */
@@ -863,6 +928,10 @@ select {
     grid-template-columns: 1fr 1fr;
   }
 
+  .featured-profile-card {
+    grid-column: span 2;
+  }
+
   .service-detail-card {
     flex-direction: column;
   }
@@ -895,6 +964,10 @@ select {
   .strength-grid,
   .form-row {
     grid-template-columns: 1fr;
+  }
+
+  .featured-profile-card {
+    grid-column: span 1;
   }
 
   .service-detail-content {

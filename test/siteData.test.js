@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import handler, { internals } from "../api/contact.js";
-import { firmContact, team } from "../src/data/siteData.js";
+import { firmContact, practiceAreas, team } from "../src/data/siteData.js";
 import { validateContactPayload } from "../src/utils/contactValidation.js";
 
 test("uses the official contact details", () => {
@@ -12,6 +12,31 @@ test("uses the official contact details", () => {
 
 test("uses the updated lead counsel name", () => {
   assert.equal(team[0].name, "Marco Akol Deng");
+  assert.equal(team[0].role, "Founder & Chief Executive Officer");
+});
+
+test("includes Marco Akol Deng's verified professional profile details", () => {
+  const marco = team.find((member) => member.slug === "marco-akol-deng");
+
+  assert.ok(marco);
+  assert.equal(marco.credentials, "Advocate & Commissioner for Oaths");
+  assert.ok(marco.qualifications.includes("Commissioner for Oaths"));
+  assert.ok(
+    marco.leadership.includes(
+      "General Secretary, South Sudan Athletics Federation",
+    ),
+  );
+  assert.ok(marco.expertise.includes("Sports Law"));
+});
+
+test("includes the Sports Law and Governance service", () => {
+  const sportsLaw = practiceAreas.find(
+    (service) => service.slug === "sports-law-governance",
+  );
+
+  assert.ok(sportsLaw);
+  assert.equal(sportsLaw.title, "Sports Law and Governance");
+  assert.ok(sportsLaw.services.includes("Sports dispute resolution"));
 });
 
 test("validates required contact fields", () => {

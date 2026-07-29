@@ -1,5 +1,6 @@
 import { useState } from "react";
 import SectionHeading from "../components/common/SectionHeading";
+import Seo from "../components/common/Seo";
 import { firmContact, practiceAreas } from "../data/siteData";
 
 export default function ContactPage() {
@@ -75,6 +76,11 @@ export default function ContactPage() {
 
   return (
     <section className="section page-section">
+      <Seo
+        title="Contact Akol For Legal Services | Legal Consultations"
+        description="Contact Akol For Legal Services in Juba, South Sudan for legal consultations, corporate advisory, dispute resolution, and Commissioner for Oaths services."
+        path="/contact"
+      />
       <div className="container contact-grid">
         <div>
           <SectionHeading

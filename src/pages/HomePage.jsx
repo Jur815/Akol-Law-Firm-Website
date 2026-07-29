@@ -1,11 +1,16 @@
 import Hero from "../components/home/Hero";
+import { Link } from "react-router-dom";
 import SectionHeading from "../components/common/SectionHeading";
+import Seo from "../components/common/Seo";
 import ServiceCard from "../components/common/ServiceCard";
-import { industries, practiceAreas, strengths } from "../data/siteData";
+import { industries, practiceAreas, strengths, team } from "../data/siteData";
 
 export default function HomePage() {
+  const leader = team.find((member) => member.slug === "marco-akol-deng");
+
   return (
     <>
+      <Seo />
       <Hero />
 
       <section className="section">
@@ -43,6 +48,37 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {leader ? (
+        <section className="section">
+          <div className="container two-column">
+            <div>
+              <SectionHeading
+                eyebrow="Leadership"
+                title="Leadership Built on Legal Excellence"
+                description={leader.shortBio}
+              />
+              <Link to="/team#marco-akol-deng" className="btn btn-gold">
+                View Full Profile
+              </Link>
+            </div>
+
+            <div className="glass-card leadership-card">
+              <p className="eyebrow">Founder Profile</p>
+              <h3>{leader.name}</h3>
+              <p className="team-role">{leader.role}</p>
+              <p className="team-credentials">{leader.credentials}</p>
+              <div className="pill-wrap compact-pills">
+                {leader.expertise.slice(0, 4).map((item) => (
+                  <span key={item} className="pill">
+                    {item}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+      ) : null}
 
       <section className="section section-muted">
         <div className="container">

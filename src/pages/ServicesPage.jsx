@@ -1,10 +1,16 @@
 import { Link } from "react-router-dom";
 import SectionHeading from "../components/common/SectionHeading";
+import Seo from "../components/common/Seo";
 import { practiceAreas } from "../data/siteData";
 
 export default function ServicesPage() {
   return (
     <section className="section page-section">
+      <Seo
+        title="Sports Law and Legal Services | Akol For Legal Services"
+        description="Explore Akol For Legal Services practice areas, including Sports Law and Governance support for federations, clubs, athletes, administrators, and organisations in South Sudan."
+        path="/services"
+      />
       <div className="container">
         <SectionHeading
           eyebrow="Practice Areas"
@@ -26,6 +32,13 @@ export default function ServicesPage() {
                   <div>
                     <h3>{service.title}</h3>
                     <p>{service.full}</p>
+                    {service.services ? (
+                      <ul className="service-feature-list">
+                        {service.services.map((item) => (
+                          <li key={item}>{item}</li>
+                        ))}
+                      </ul>
+                    ) : null}
                   </div>
                 </div>
 

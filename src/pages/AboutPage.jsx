@@ -1,9 +1,15 @@
 import SectionHeading from "../components/common/SectionHeading";
+import Seo from "../components/common/Seo";
 import { strengths } from "../data/siteData";
 
 export default function AboutPage() {
   return (
     <section className="section page-section">
+      <Seo
+        title="About Akol For Legal Services | Legal Counsel in South Sudan"
+        description="Learn about Akol For Legal Services, a South Sudan law firm focused on strategic legal counsel, integrity, compliance, and practical business solutions."
+        path="/about"
+      />
       <div className="container">
         <SectionHeading
           eyebrow="About The Firm"
