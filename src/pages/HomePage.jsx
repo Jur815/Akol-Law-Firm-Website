@@ -51,12 +51,12 @@ export default function HomePage() {
 
       {leader ? (
         <section className="section">
-          <div className="container two-column">
-            <div>
+          <div className="container leadership-grid">
+            <div className="leadership-intro">
               <SectionHeading
                 eyebrow="Leadership"
                 title="Leadership Built on Legal Excellence"
-                description={leader.shortBio}
+                description="Marco Akol Deng leads Akol For Legal Services with legal discipline, institutional experience, and a commitment to trusted professional counsel."
               />
               <Link to="/team#marco-akol-deng" className="btn btn-gold">
                 View Full Profile
@@ -64,16 +64,22 @@ export default function HomePage() {
             </div>
 
             <div className="glass-card leadership-card">
-              <p className="eyebrow">Founder Profile</p>
-              <h3>{leader.name}</h3>
-              <p className="team-role">{leader.role}</p>
-              <p className="team-credentials">{leader.credentials}</p>
-              <div className="pill-wrap compact-pills">
-                {leader.expertise.slice(0, 4).map((item) => (
-                  <span key={item} className="pill">
-                    {item}
-                  </span>
-                ))}
+              <div className="profile-portrait compact-portrait" aria-hidden="true">
+                MAD
+              </div>
+              <div>
+                <p className="eyebrow">Founder Profile</p>
+                <h3>{leader.name}</h3>
+                <p className="team-role">{leader.role}</p>
+                <p className="team-credentials">{leader.credentials}</p>
+                <p>{leader.shortBio}</p>
+                <div className="pill-wrap compact-pills">
+                  {leader.expertise.slice(0, 4).map((item) => (
+                    <span key={item} className="pill">
+                      {item}
+                    </span>
+                  ))}
+                </div>
               </div>
             </div>
           </div>

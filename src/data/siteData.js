@@ -126,7 +126,7 @@ export const team = [
       "Advocate in South Sudan",
       "Commissioner for Oaths",
       "Bachelor of Laws, Al-Neelain University, 2010",
-      "Founder and Chief Executive Officer, Akol For Legal Services",
+      "Founder & Chief Executive Officer, Akol For Legal Services",
     ],
     leadership: [
       "Founding Member, South Sudan Football Federation",
