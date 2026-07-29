@@ -7,6 +7,8 @@ import {
   Trophy,
 } from "lucide-react";
 
+const marcoAjouAleu = new URL("../assets/team/marco-ajou-aleu.webp", import.meta.url).href;
+
 export const firmContact = {
   name: "Akol For Legal Services (ALS)",
   location: "Juba, South Sudan",
@@ -151,6 +153,7 @@ export const team = [
     credentials: "Administrative Operations & Legal Clerical Support",
     profileLabel: "Professional Profile",
     initials: "MAA",
+    image: marcoAjouAleu,
     shortBio:
       "Marco Ajou Aleu oversees the firm's administrative operations while providing essential legal and clerical support. His ICT background strengthens records management, database maintenance, office systems, communication, and efficient administrative operations.",
     bio: [

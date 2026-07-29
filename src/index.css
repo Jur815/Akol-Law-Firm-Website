@@ -680,6 +680,14 @@ select {
   box-shadow: var(--shadow);
 }
 
+.profile-photo {
+  display: block;
+  object-fit: cover;
+  object-position: center top;
+  padding: 0;
+  background: rgba(255, 255, 255, 0.08);
+}
+
 .compact-portrait {
   width: 82px;
   height: 82px;

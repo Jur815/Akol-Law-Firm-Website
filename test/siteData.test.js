@@ -35,6 +35,7 @@ test("includes Marco Ajou Aleu's office manager and legal clerk profile", () => 
   assert.ok(marcoAjou);
   assert.equal(marcoAjou.name, "Marco Ajou Aleu");
   assert.equal(marcoAjou.role, "Office Manager & Legal Clerk");
+  assert.ok(marcoAjou.image.endsWith("/assets/team/marco-ajou-aleu.webp"));
   assert.ok(marcoAjou.summary.includes("Legal clerical support"));
   assert.ok(marcoAjou.summary.includes("ICT-supported office systems"));
   assert.ok(marcoAjou.summary.includes("Database maintenance"));

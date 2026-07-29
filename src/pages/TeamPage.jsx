@@ -58,9 +58,20 @@ function ExecutiveProfile({ member }) {
   return (
     <>
       <div className="profile-header">
-        <div className="profile-portrait" aria-hidden="true">
-          {member.initials || getInitials(member.name)}
-        </div>
+        {member.image ? (
+          <img
+            src={member.image}
+            alt={member.name}
+            className="profile-portrait profile-photo"
+            loading="lazy"
+            width="132"
+            height="132"
+          />
+        ) : (
+          <div className="profile-portrait" aria-hidden="true">
+            {member.initials || getInitials(member.name)}
+          </div>
+        )}
         <div className="profile-header-copy">
           <p className="eyebrow">{member.profileLabel || "Executive Profile"}</p>
           <h3>{member.name}</h3>
