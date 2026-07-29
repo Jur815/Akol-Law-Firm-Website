@@ -29,6 +29,25 @@ test("includes Marco Akol Deng's verified professional profile details", () => {
   assert.ok(marco.expertise.includes("Sports Law"));
 });
 
+test("includes Marco Ajou Aleu's office manager and legal clerk profile", () => {
+  const marcoAjou = team.find((member) => member.slug === "marco-ajou-aleu");
+
+  assert.ok(marcoAjou);
+  assert.equal(marcoAjou.name, "Marco Ajou Aleu");
+  assert.equal(marcoAjou.role, "Office Manager & Legal Clerk");
+  assert.ok(marcoAjou.summary.includes("Legal clerical support"));
+  assert.ok(
+    marcoAjou.responsibilities.some(
+      (group) =>
+        group.title === "Legal Clerk" &&
+        group.items.includes(
+          "Manages legal documents, files, and records while maintaining confidentiality.",
+        ),
+    ),
+  );
+  assert.ok(marcoAjou.expertise.includes("Office Administration"));
+});
+
 test("includes the Sports Law and Governance service", () => {
   const sportsLaw = practiceAreas.find(
     (service) => service.slug === "sports-law-governance",

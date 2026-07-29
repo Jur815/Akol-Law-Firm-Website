@@ -764,6 +764,12 @@ select {
   margin-top: 18px;
 }
 
+.responsibility-grid {
+  display: grid;
+  gap: 16px;
+  margin-top: 18px;
+}
+
 .qualification-card {
   padding: 16px;
   border: 1px solid var(--border);
@@ -771,6 +777,12 @@ select {
   background: rgba(15, 23, 42, 0.72);
   color: #e2e8f0;
   line-height: 1.55;
+}
+
+.qualification-card h5 {
+  margin: 0;
+  color: #fde68a;
+  font-size: 0.98rem;
 }
 
 .profile-timeline {
