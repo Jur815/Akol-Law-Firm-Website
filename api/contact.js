@@ -166,6 +166,7 @@ export default async function handler(req, res) {
   const { values } = validation;
   const resendResponse = await fetch(resendEndpoint, {
     method: "POST",
+    signal: AbortSignal.timeout(8_000),
     headers: {
       Authorization: `Bearer ${apiKey}`,
       "Content-Type": "application/json",
@@ -178,11 +179,11 @@ export default async function handler(req, res) {
       text: textEmail(values),
       html: htmlEmail(values),
     }),
-  });
+  }).catch(() => null);
 
-  if (!resendResponse.ok) {
+  if (!resendResponse?.ok) {
     sendJson(res, 502, {
-      message: "The email provider did not accept the request.",
+      message: "Email delivery could not be confirmed. Please contact the firm directly.",
     });
     return;
   }

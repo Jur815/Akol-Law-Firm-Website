@@ -151,6 +151,15 @@ test("contact API sends successful submissions", async () => {
     assert.equal(JSON.parse(res.body).message, "Message sent successfully.");
     assert.equal(sentPayload.to, "info2026akollegalservices@gmail.com");
     assert.equal(sentPayload.reply_to, "jane@example.com");
+
+    globalThis.fetch = async () => {
+      throw new TypeError("Network unavailable");
+    };
+
+    await handler(req, res);
+
+    assert.equal(res.statusCode, 502);
+    assert.match(JSON.parse(res.body).message, /contact the firm directly/);
   } finally {
     globalThis.fetch = originalFetch;
     restoreEnv(originalEnv);

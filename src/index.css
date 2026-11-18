@@ -40,7 +40,8 @@ a:focus-visible,
 button:focus-visible,
 input:focus-visible,
 textarea:focus-visible,
-select:focus-visible {
+select:focus-visible,
+main [tabindex="-1"]:focus-visible {
   outline: 3px solid rgba(251, 191, 36, 0.85);
   outline-offset: 4px;
 }
@@ -270,10 +271,9 @@ select {
 .hero-grid {
   position: relative;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 48px;
-  padding-top: 90px;
-  padding-bottom: 90px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(24px, 4vw, 48px);
+  padding-block: clamp(36px, 7vh, 64px);
   align-items: center;
 }
 
@@ -303,7 +303,7 @@ select {
 
 .hero-description {
   max-width: 680px;
-  margin: 24px 0 0;
+  margin: 18px 0 0;
   color: var(--muted);
   font-size: 1.1rem;
   line-height: 1.8;
@@ -313,7 +313,7 @@ select {
   display: flex;
   flex-wrap: wrap;
   gap: 16px;
-  margin-top: 32px;
+  margin-top: 24px;
 }
 
 .hero-card-wrap {
@@ -347,6 +347,7 @@ select {
 }
 
 .hero-card-brand img {
+  flex-shrink: 0;
   width: 66px;
   height: 66px;
   border-radius: 999px;
@@ -948,6 +949,12 @@ select {
   color: #fca5a5;
 }
 
+.form-field-error {
+  margin: 0;
+  color: #fca5a5;
+  font-size: 0.9rem;
+}
+
 /* WhatsApp */
 .whatsapp-button {
   position: fixed;
@@ -1059,6 +1066,12 @@ select {
 }
 
 /* Responsive */
+@media (min-width: 961px) and (max-height: 700px) {
+  .hero-grid {
+    align-items: start;
+  }
+}
+
 @media (max-width: 960px) {
   .desktop-nav,
   .desktop-cta {
@@ -1071,7 +1084,10 @@ select {
     justify-content: center;
   }
 
-  .hero-grid,
+  .hero-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
   .two-column,
   .contact-grid,
   .footer-grid {
@@ -1110,8 +1126,7 @@ select {
   }
 
   .hero-grid {
-    padding-top: 62px;
-    padding-bottom: 62px;
+    padding-block: 40px;
   }
 
   .hero-card,
@@ -1176,5 +1191,19 @@ select {
 @media (max-width: 360px) {
   .brand-subtitle {
     display: none;
+  }
+
+  .hero-card,
+  .hero-card-inner {
+    padding: 16px;
+  }
+
+  .hero-card-brand {
+    gap: 12px;
+  }
+
+  .hero-card-brand img {
+    width: 48px;
+    height: 48px;
   }
 }

@@ -1,30 +1,76 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import SectionHeading from "../components/common/SectionHeading";
-import Seo from "../components/common/Seo";
 import { firmContact, practiceAreas } from "../data/siteData";
+import { contactFieldLimits, validateContactPayload } from "../utils/contactValidation";
+
+const initialFormData = {
+  name: "",
+  email: "",
+  phone: "",
+  service: practiceAreas[0].title,
+  message: "",
+};
+const fieldOrder = Object.keys(initialFormData);
+
+function FieldError({ name, error }) {
+  return error ? (
+    <p className="form-field-error" id={`contact-${name}-error`}>{error}</p>
+  ) : null;
+}
 
 export default function ContactPage() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    service: practiceAreas[0].title,
-    message: "",
-  });
+  const [formData, setFormData] = useState(initialFormData);
+  const [fieldErrors, setFieldErrors] = useState({});
+  const formRef = useRef(null);
+  const pendingFocus = useRef(null);
   const [formStatus, setFormStatus] = useState({
     type: "idle",
     message: "",
   });
 
+  useEffect(() => {
+    if (pendingFocus.current) {
+      formRef.current.elements.namedItem(pendingFocus.current)?.focus();
+      pendingFocus.current = null;
+    }
+  }, [fieldErrors]);
+
+  function showFieldErrors(errors) {
+    const nextErrors = { ...errors, service: errors.subject };
+    pendingFocus.current = fieldOrder.find((field) => nextErrors[field]);
+    setFieldErrors(nextErrors);
+  }
+
+  function fieldAccessibility(name) {
+    return fieldErrors[name]
+      ? { "aria-invalid": true, "aria-describedby": `contact-${name}-error` }
+      : {};
+  }
+
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-    setFormStatus({ type: "idle", message: "" });
+    setFieldErrors((prev) => ({ ...prev, [name]: undefined }));
+    if (formStatus.type !== "loading") {
+      setFormStatus({ type: "idle", message: "" });
+    }
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    if (formStatus.type === "loading") return;
 
+    const validation = validateContactPayload({
+      ...formData,
+      subject: `Legal Consultation Request - ${formData.service}`,
+    });
+    if (!validation.isValid) {
+      showFieldErrors(validation.errors);
+      setFormStatus({ type: "error", message: "Please correct the highlighted fields." });
+      return;
+    }
+
+    setFieldErrors({});
     setFormStatus({
       type: "loading",
       message: "Sending your consultation request...",
@@ -36,29 +82,17 @@ export default function ContactPage() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          phone: formData.phone,
-          subject: `Legal Consultation Request - ${formData.service}`,
-          message: formData.message,
-          company: "",
-        }),
+        body: JSON.stringify(validation.values),
       });
 
-      const result = await response.json().catch(() => ({}));
+      const result = await response.json().catch(() => null);
 
-      if (!response.ok) {
-        throw new Error(result.message || "Unable to send your request right now.");
+      if (!response.ok || typeof result?.message !== "string") {
+        if (result?.errors) showFieldErrors(result.errors);
+        throw new Error(result?.message || "Unable to send your request right now.");
       }
 
-      setFormData({
-        name: "",
-        email: "",
-        phone: "",
-        service: practiceAreas[0].title,
-        message: "",
-      });
+      setFormData(initialFormData);
       setFormStatus({
         type: "success",
         message: "Your consultation request has been sent successfully.",
@@ -76,11 +110,6 @@ export default function ContactPage() {
 
   return (
     <section className="section page-section">
-      <Seo
-        title="Contact Akol For Legal Services | Legal Consultations"
-        description="Contact Akol For Legal Services in Juba, South Sudan for legal consultations, corporate advisory, dispute resolution, and Commissioner for Oaths services."
-        path="/contact"
-      />
       <div className="container contact-grid">
         <div>
           <SectionHeading
@@ -128,7 +157,9 @@ export default function ContactPage() {
 
         <div className="form-card">
           <form
+            ref={formRef}
             onSubmit={handleSubmit}
+            noValidate
             aria-describedby={
               formStatus.message ? "contact-form-status contact-form-note" : "contact-form-note"
             }
@@ -141,9 +172,13 @@ export default function ContactPage() {
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
+                maxLength={contactFieldLimits.name}
+                autoComplete="name"
+                {...fieldAccessibility("name")}
                 required
                 placeholder="Enter your full name"
               />
+              <FieldError name="name" error={fieldErrors.name} />
             </div>
 
             <div className="form-row">
@@ -155,22 +190,30 @@ export default function ContactPage() {
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
+                  maxLength={contactFieldLimits.email}
+                  autoComplete="email"
+                  {...fieldAccessibility("email")}
                   required
                   placeholder="Enter your email"
                 />
+                <FieldError name="email" error={fieldErrors.email} />
               </div>
 
               <div className="form-group">
                 <label htmlFor="contact-phone">Phone</label>
                 <input
                   id="contact-phone"
-                  type="text"
+                  type="tel"
                   name="phone"
                   value={formData.phone}
                   onChange={handleChange}
+                  maxLength={contactFieldLimits.phone}
+                  autoComplete="tel"
+                  {...fieldAccessibility("phone")}
                   required
                   placeholder="Enter your phone"
                 />
+                <FieldError name="phone" error={fieldErrors.phone} />
               </div>
             </div>
 
@@ -181,11 +224,13 @@ export default function ContactPage() {
                 name="service"
                 value={formData.service}
                 onChange={handleChange}
+                {...fieldAccessibility("service")}
               >
                 {practiceAreas.map((item) => (
                   <option key={item.slug}>{item.title}</option>
                 ))}
               </select>
+              <FieldError name="service" error={fieldErrors.service} />
             </div>
 
             <div className="form-group">
@@ -196,9 +241,12 @@ export default function ContactPage() {
                 name="message"
                 value={formData.message}
                 onChange={handleChange}
+                maxLength={contactFieldLimits.message}
+                {...fieldAccessibility("message")}
                 required
                 placeholder="Tell us about your legal matter"
               />
+              <FieldError name="message" error={fieldErrors.message} />
             </div>
 
             <button

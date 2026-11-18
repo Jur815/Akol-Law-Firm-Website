@@ -1,19 +1,16 @@
 import { useEffect } from "react";
-
-const siteTitle = "Akol For Legal Services | Advocates & Commissioners for Oaths";
-const defaultDescription =
-  "Akol For Legal Services provides strategic legal counsel, advocacy, dispute resolution, and corporate advisory services for clients in South Sudan.";
+import { useLocation } from "react-router-dom";
+import { getPageMetadata } from "../../data/pageMetadata";
 
 function setMeta(selector, attribute, value) {
-  const element = document.head.querySelector(selector);
-  if (element) {
-    element.setAttribute(attribute, value);
-  }
+  document.head.querySelector(selector)?.setAttribute(attribute, value);
 }
 
-export default function Seo({ title = siteTitle, description = defaultDescription, path = "/" }) {
+export default function Seo() {
+  const { pathname } = useLocation();
+
   useEffect(() => {
-    const url = `https://akolforlegalservices.com${path}`;
+    const { title, description, url } = getPageMetadata(pathname);
 
     document.title = title;
     setMeta('meta[name="description"]', "content", description);
@@ -23,7 +20,7 @@ export default function Seo({ title = siteTitle, description = defaultDescriptio
     setMeta('meta[name="twitter:title"]', "content", title);
     setMeta('meta[name="twitter:description"]', "content", description);
     setMeta('link[rel="canonical"]', "href", url);
-  }, [description, path, title]);
+  }, [pathname]);
 
   return null;
 }

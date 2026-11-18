@@ -1,8 +1,19 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "trailingSlash": false,
+  "redirects": [
+    { "source": "/((?!about$)[aA][bB][oO][uU][tT])", "destination": "/about", "permanent": true },
+    { "source": "/((?!services$)[sS][eE][rR][vV][iI][cC][eE][sS])", "destination": "/services", "permanent": true },
+    { "source": "/((?!team$)[tT][eE][aA][mM])", "destination": "/team", "permanent": true },
+    { "source": "/((?!contact$)[cC][oO][nN][tT][aA][cC][tT])", "destination": "/contact", "permanent": true }
+  ],
   "rewrites": [
+    { "source": "/about", "destination": "/about/index.html" },
+    { "source": "/services", "destination": "/services/index.html" },
+    { "source": "/team", "destination": "/team/index.html" },
+    { "source": "/contact", "destination": "/contact/index.html" },
     {
-      "source": "/(.*)",
+      "source": "/((?!api(?:/|$)|assets(?:/|$)|.*\\.[^/]+$).*)",
       "destination": "/index.html"
     }
   ]

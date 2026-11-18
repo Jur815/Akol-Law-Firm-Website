@@ -1,16 +1,10 @@
 import SectionHeading from "../components/common/SectionHeading";
-import Seo from "../components/common/Seo";
 import { team } from "../data/siteData";
 import { Link } from "react-router-dom";
 
 export default function TeamPage() {
   return (
     <section className="section page-section">
-      <Seo
-        title="Marco Akol Deng Mawien | Founder & CEO | Akol For Legal Services"
-        description="Learn about Akol For Legal Services team members, including Marco Akol Deng Mawien, Founder and CEO, and Marco Ajou Aleu, Office Manager and Legal Clerk."
-        path="/team"
-      />
       <div className="container">
         <SectionHeading
           eyebrow="Our Team"
