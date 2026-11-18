@@ -22,7 +22,9 @@ export default function HomePage() {
               description="ALS is a premier multi-disciplinary law firm dedicated to delivering strategic legal counsel and robust representation across South Sudan. We translate complex legal frameworks into actionable solutions for corporations, institutions, and individuals."
             />
             <p className="body-large">
-              Our mission is to help clients operate with confidence, remain protected, and make informed decisions that support long-term success.
+              Our mission is to help clients operate with confidence, remain
+              protected, and make informed decisions that support long-term
+              success.
             </p>
           </div>
 
@@ -30,7 +32,9 @@ export default function HomePage() {
             <div className="glass-card">
               <p className="eyebrow">Our Vision</p>
               <p className="card-text">
-                To be the regional benchmark for legal excellence, recognized for unwavering commitment to justice, corporate integrity, and the socio-economic development of the markets we serve.
+                To be the regional benchmark for legal excellence, recognized
+                for unwavering commitment to justice, corporate integrity, and
+                the socio-economic development of the markets we serve.
               </p>
             </div>
 
@@ -56,7 +60,7 @@ export default function HomePage() {
               <SectionHeading
                 eyebrow="Leadership"
                 title="Leadership Built on Legal Excellence"
-                description="Marco Akol Deng leads Akol For Legal Services with legal discipline, institutional experience, and a commitment to trusted professional counsel."
+                description="Marco Akol Deng Mawien leads Akol For Legal Services with legal discipline, institutional experience, and a commitment to trusted professional counsel."
               />
               <Link to="/team#marco-akol-deng" className="btn btn-gold">
                 View Full Profile
@@ -64,7 +68,10 @@ export default function HomePage() {
             </div>
 
             <div className="glass-card leadership-card">
-              <div className="profile-portrait compact-portrait" aria-hidden="true">
+              <div
+                className="profile-portrait compact-portrait"
+                aria-hidden="true"
+              >
                 MAD
               </div>
               <div>
@@ -125,15 +132,24 @@ export default function HomePage() {
             <div className="stack">
               <div className="dark-card">
                 <h3>Infrastructure Compliance Advisory</h3>
-                <p>Advised on legal and regulatory considerations surrounding project structure, land use, and compliance requirements.</p>
+                <p>
+                  Advised on legal and regulatory considerations surrounding
+                  project structure, land use, and compliance requirements.
+                </p>
               </div>
               <div className="dark-card">
                 <h3>Commercial Dispute Strategy</h3>
-                <p>Supported dispute positioning and resolution planning for commercial parties seeking effective legal remedies.</p>
+                <p>
+                  Supported dispute positioning and resolution planning for
+                  commercial parties seeking effective legal remedies.
+                </p>
               </div>
               <div className="dark-card">
                 <h3>Corporate Risk Structuring</h3>
-                <p>Developed legal risk approaches tailored to business operations, governance exposure, and asset protection needs.</p>
+                <p>
+                  Developed legal risk approaches tailored to business
+                  operations, governance exposure, and asset protection needs.
+                </p>
               </div>
             </div>
           </div>

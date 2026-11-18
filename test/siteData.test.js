@@ -11,11 +11,11 @@ test("uses the official contact details", () => {
 });
 
 test("uses the updated lead counsel name", () => {
-  assert.equal(team[0].name, "Marco Akol Deng");
+  assert.equal(team[0].name, "Marco Akol Deng Mawien");
   assert.equal(team[0].role, "Founder & Chief Executive Officer");
 });
 
-test("includes Marco Akol Deng's verified professional profile details", () => {
+test("includes Marco Akol Deng Mawien's verified professional profile details", () => {
   const marco = team.find((member) => member.slug === "marco-akol-deng");
 
   assert.ok(marco);
@@ -97,7 +97,10 @@ test("rejects invalid email addresses", () => {
 });
 
 test("contact form defaults to the official temporary recipient email", () => {
-  assert.equal(internals.defaultRecipientEmail, "info2026akollegalservices@gmail.com");
+  assert.equal(
+    internals.defaultRecipientEmail,
+    "info2026akollegalservices@gmail.com",
+  );
 });
 
 test("contact API sends successful submissions", async () => {
@@ -115,7 +118,8 @@ test("contact API sends successful submissions", async () => {
   };
   process.env.RESEND_API_KEY = "test-key";
   delete process.env.CONTACT_RECIPIENT_EMAIL;
-  process.env.CONTACT_FROM_EMAIL = "Akol For Legal Services <website@example.com>";
+  process.env.CONTACT_FROM_EMAIL =
+    "Akol For Legal Services <website@example.com>";
 
   const req = {
     method: "POST",

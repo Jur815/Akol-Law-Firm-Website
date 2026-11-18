@@ -7,8 +7,8 @@ export default function TeamPage() {
   return (
     <section className="section page-section">
       <Seo
-        title="Marco Akol Deng | Founder & CEO | Akol For Legal Services"
-        description="Learn about Akol For Legal Services team members, including Marco Akol Deng, Founder and CEO, and Marco Ajou Aleu, Office Manager and Legal Clerk."
+        title="Marco Akol Deng Mawien | Founder & CEO | Akol For Legal Services"
+        description="Learn about Akol For Legal Services team members, including Marco Akol Deng Mawien, Founder and CEO, and Marco Ajou Aleu, Office Manager and Legal Clerk."
         path="/team"
       />
       <div className="container">
@@ -24,7 +24,11 @@ export default function TeamPage() {
             <div
               key={member.name}
               id={member.slug}
-              className={hasDetailedProfile(member) ? "team-card featured-profile-card" : "team-card"}
+              className={
+                hasDetailedProfile(member)
+                  ? "team-card featured-profile-card"
+                  : "team-card"
+              }
             >
               {hasDetailedProfile(member) ? (
                 <ExecutiveProfile member={member} />
@@ -73,7 +77,9 @@ function ExecutiveProfile({ member }) {
           </div>
         )}
         <div className="profile-header-copy">
-          <p className="eyebrow">{member.profileLabel || "Executive Profile"}</p>
+          <p className="eyebrow">
+            {member.profileLabel || "Executive Profile"}
+          </p>
           <h3>{member.name}</h3>
           <p className="team-role">{member.role}</p>
           <p className="team-credentials">{member.credentials}</p>
@@ -90,7 +96,10 @@ function ExecutiveProfile({ member }) {
 
       <div className="profile-layout">
         <div className="profile-main">
-          <section className="profile-section-block" aria-labelledby={biographyId}>
+          <section
+            className="profile-section-block"
+            aria-labelledby={biographyId}
+          >
             <h4 id={biographyId}>Biography</h4>
             <div className="profile-copy">
               {member.bio.map((paragraph) => (
@@ -100,7 +109,10 @@ function ExecutiveProfile({ member }) {
           </section>
 
           {member.summary ? (
-            <section className="profile-section-block" aria-labelledby={summaryId}>
+            <section
+              className="profile-section-block"
+              aria-labelledby={summaryId}
+            >
               <h4 id={summaryId}>Professional Summary</h4>
               <div className="pill-wrap compact-pills">
                 {member.summary.map((item) => (
@@ -113,7 +125,10 @@ function ExecutiveProfile({ member }) {
           ) : null}
 
           {member.leadership ? (
-            <section className="profile-section-block" aria-labelledby={leadershipId}>
+            <section
+              className="profile-section-block"
+              aria-labelledby={leadershipId}
+            >
               <h4 id={leadershipId}>Leadership and Sports Administration</h4>
               <ol className="profile-timeline">
                 {member.leadership.map((item) => (
@@ -127,7 +142,10 @@ function ExecutiveProfile({ member }) {
           ) : null}
 
           {member.responsibilities ? (
-            <section className="profile-section-block" aria-labelledby={responsibilitiesId}>
+            <section
+              className="profile-section-block"
+              aria-labelledby={responsibilitiesId}
+            >
               <h4 id={responsibilitiesId}>Key Responsibilities</h4>
               <div className="responsibility-grid">
                 {member.responsibilities.map((group) => (
@@ -145,10 +163,18 @@ function ExecutiveProfile({ member }) {
           ) : null}
         </div>
 
-        <aside className="profile-aside" aria-label={`${member.name} professional details`}>
+        <aside
+          className="profile-aside"
+          aria-label={`${member.name} professional details`}
+        >
           {member.qualificationsExperience ? (
-            <section className="profile-section-block" aria-labelledby={qualificationsExperienceId}>
-              <h4 id={qualificationsExperienceId}>Qualifications and Experience</h4>
+            <section
+              className="profile-section-block"
+              aria-labelledby={qualificationsExperienceId}
+            >
+              <h4 id={qualificationsExperienceId}>
+                Qualifications and Experience
+              </h4>
               <div className="qualification-grid">
                 {member.qualificationsExperience.map((item) => (
                   <div key={item} className="qualification-card">
@@ -160,7 +186,10 @@ function ExecutiveProfile({ member }) {
           ) : null}
 
           {member.qualifications ? (
-            <section className="profile-section-block" aria-labelledby={qualificationsId}>
+            <section
+              className="profile-section-block"
+              aria-labelledby={qualificationsId}
+            >
               <h4 id={qualificationsId}>Professional Qualifications</h4>
               <div className="qualification-grid">
                 {member.qualifications.map((item) => (
@@ -172,9 +201,14 @@ function ExecutiveProfile({ member }) {
             </section>
           ) : null}
 
-          <section className="profile-section-block" aria-labelledby={expertiseId}>
+          <section
+            className="profile-section-block"
+            aria-labelledby={expertiseId}
+          >
             <h4 id={expertiseId}>
-              {member.qualifications ? "Areas of Expertise" : "Areas of Administrative Expertise"}
+              {member.qualifications
+                ? "Areas of Expertise"
+                : "Areas of Administrative Expertise"}
             </h4>
             <div className="pill-wrap compact-pills">
               {member.expertise.map((item) => (
