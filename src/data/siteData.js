@@ -7,7 +7,10 @@ import {
   Trophy,
 } from "lucide-react";
 
-const marcoAjouAleu = new URL("../assets/team/marco-ajou-aleu.webp", import.meta.url).href;
+const marcoAjouAleu = new URL(
+  "../assets/team/marco-ajou-aleu.webp",
+  import.meta.url,
+).href;
 
 export const firmContact = {
   name: "Akol For Legal Services (ALS)",
@@ -29,8 +32,7 @@ export const practiceAreas = [
     icon: Building2,
     short:
       "Legal scaffolding for energy, infrastructure, land use, and project compliance.",
-    full:
-      "We advise on regulatory compliance, land use, project structuring, permits, contractual frameworks, and legal support for residential, commercial, and renewable energy projects.",
+    full: "We advise on regulatory compliance, land use, project structuring, permits, contractual frameworks, and legal support for residential, commercial, and renewable energy projects.",
   },
   {
     title: "Commercial Litigation & Dispute Resolution",
@@ -38,8 +40,7 @@ export const practiceAreas = [
     icon: Scale,
     short:
       "Strategic advocacy in civil and commercial disputes, mediation, and arbitration.",
-    full:
-      "ALS protects client interests through rigorous litigation strategy, negotiation, mediation, and arbitration support for commercial conflicts and high-stakes legal disputes.",
+    full: "ALS protects client interests through rigorous litigation strategy, negotiation, mediation, and arbitration support for commercial conflicts and high-stakes legal disputes.",
   },
   {
     title: "Employment & Labor Law",
@@ -47,8 +48,7 @@ export const practiceAreas = [
     icon: Briefcase,
     short:
       "Employment agreements, labor disputes, workplace compliance, and risk reduction.",
-    full:
-      "We help employers and institutions draft robust employment contracts, handle labor disputes, and build legally compliant workplace frameworks with clarity and precision.",
+    full: "We help employers and institutions draft robust employment contracts, handle labor disputes, and build legally compliant workplace frameworks with clarity and precision.",
   },
   {
     title: "Aviation Law",
@@ -56,8 +56,7 @@ export const practiceAreas = [
     icon: Plane,
     short:
       "Specialized legal counsel for airlines, operators, and aviation stakeholders.",
-    full:
-      "We offer specialized legal support to airlines, charter operators, aviation service providers, and sector stakeholders navigating operational and regulatory legal requirements in South Sudan.",
+    full: "We offer specialized legal support to airlines, charter operators, aviation service providers, and sector stakeholders navigating operational and regulatory legal requirements in South Sudan.",
   },
   {
     title: "Corporate Risk Advisory",
@@ -65,8 +64,7 @@ export const practiceAreas = [
     icon: ShieldCheck,
     short:
       "Tailored legal frameworks that reduce exposure and protect business assets.",
-    full:
-      "ALS evaluates organizational risk exposure and develops practical legal frameworks that support governance, compliance, asset protection, and long-term business resilience.",
+    full: "ALS evaluates organizational risk exposure and develops practical legal frameworks that support governance, compliance, asset protection, and long-term business resilience.",
   },
   {
     title: "Sports Law and Governance",
@@ -74,8 +72,7 @@ export const practiceAreas = [
     icon: Trophy,
     short:
       "Legal and governance support for sports federations, clubs, athletes, and administrators.",
-    full:
-      "Akol For Legal Services provides legal and governance support to sports federations, clubs, associations, athletes, administrators, and other stakeholders in the sports sector. The firm's experience combines legal knowledge with practical leadership in South Sudan's sports institutions.",
+    full: "Akol For Legal Services provides legal and governance support to sports federations, clubs, associations, athletes, administrators, and other stakeholders in the sports sector. The firm's experience combines legal knowledge with practical leadership in South Sudan's sports institutions.",
     services: [
       "Sports federation and club governance",
       "Constitution and policy review",
@@ -111,19 +108,19 @@ export const industries = [
 
 export const team = [
   {
-    name: "Marco Akol Deng",
+    name: "Marco Akol Deng Mawien",
     slug: "marco-akol-deng",
     role: "Founder & Chief Executive Officer",
     credentials: "Advocate & Commissioner for Oaths",
     shortBio:
-      "Marco Akol Deng is the Founder and Chief Executive Officer of Akol For Legal Services, an Advocate and Commissioner for Oaths with more than a decade of legal experience. He is also an experienced sports administrator and one of the founding members of the South Sudan Football Federation.",
+      "Marco Akol Deng Mawien is the Founder and Chief Executive Officer of Akol For Legal Services, an Advocate and Commissioner for Oaths with more than a decade of legal experience. He is also an experienced sports administrator and one of the founding members of the South Sudan Football Federation.",
     bio: [
-      "Marco Akol Deng is a distinguished Advocate, Commissioner for Oaths, sports administrator, and entrepreneur based in South Sudan. As the Founder and Chief Executive Officer of Akol For Legal Services, he brings more than a decade of legal experience and provides trusted legal guidance to individuals, businesses, institutions, and organisations.",
+      "Marco Akol Deng Mawien is a distinguished Advocate, Commissioner for Oaths, sports administrator, and entrepreneur based in South Sudan. As the Founder and Chief Executive Officer of Akol For Legal Services, he brings more than a decade of legal experience and provides trusted legal guidance to individuals, businesses, institutions, and organisations.",
       "He earned his Bachelor of Laws degree from Al-Neelain University in 2010, establishing a strong academic foundation for his legal career in South Sudan.",
-      "In addition to his legal practice, Marco Akol Deng has made significant contributions to sports governance and administration in South Sudan. He is recognised as one of the founding members of the South Sudan Football Federation.",
+      "In addition to his legal practice, Marco Akol Deng Mawien has made significant contributions to sports governance and administration in South Sudan. He is recognised as one of the founding members of the South Sudan Football Federation.",
       "He served as Vice President of the South Sudan Football Federation Electoral Committee from 2013 to 2017.",
       "He currently serves as the General Secretary of the South Sudan Athletics Federation, contributing to the governance, administration, and development of athletics in the country.",
-      "Through his legal practice and leadership roles, Marco Akol Deng has developed a reputation for professionalism, ethical leadership, strategic thinking, and commitment to institutional development.",
+      "Through his legal practice and leadership roles, Marco Akol Deng Mawien has developed a reputation for professionalism, ethical leadership, strategic thinking, and commitment to institutional development.",
     ],
     qualifications: [
       "Advocate in South Sudan",
