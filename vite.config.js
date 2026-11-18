@@ -1,7 +1,7 @@
 import { defineConfig } from "vite";
 import react, { reactCompilerPreset } from "@vitejs/plugin-react";
 import babel from "@rolldown/plugin-babel";
-import { getCanonicalPath, getPageMetadata, pageMetadata } from "./src/data/pageMetadata.js";
+import { getCanonicalPath, getPageMetadata, pageMetadata, siteOrigin } from "./src/data/pageMetadata.js";
 
 function escapeHtml(value) {
   return value.replaceAll("&", "&amp;").replaceAll('"', "&quot;")
@@ -10,9 +10,22 @@ function escapeHtml(value) {
 
 function renderMetadata(html, pathname) {
   const metadata = getPageMetadata(pathname);
-  return html.replace(/__PAGE_(TITLE|DESCRIPTION|URL)__/g, (_, field) =>
+  return html.replace(/__PAGE_(TITLE|DESCRIPTION|URL|IMAGE)__/g, (_, field) =>
     escapeHtml(metadata[field.toLowerCase()]),
   );
+}
+
+function renderSitemap(pathnames) {
+  const urls = pathnames.map((pathname) =>
+    `  <url><loc>${escapeHtml(getPageMetadata(pathname).url)}</loc></url>`,
+  );
+  return [
+    '<?xml version="1.0" encoding="UTF-8"?>',
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+    ...urls,
+    "</urlset>",
+    "",
+  ].join("\n");
 }
 
 function canonicalPageMiddleware(preview = false) {
@@ -52,8 +65,9 @@ function staticPageMetadata() {
         const index = bundle["index.html"];
         const template = index.source;
         index.source = renderMetadata(template, "/");
+        const pathnames = Object.keys(pageMetadata);
 
-        for (const pathname of Object.keys(pageMetadata)) {
+        for (const pathname of pathnames) {
           if (pathname === "/") continue;
           this.emitFile({
             type: "asset",
@@ -61,6 +75,17 @@ function staticPageMetadata() {
             source: renderMetadata(template, pathname),
           });
         }
+
+        this.emitFile({
+          type: "asset",
+          fileName: "sitemap.xml",
+          source: renderSitemap(pathnames),
+        });
+        this.emitFile({
+          type: "asset",
+          fileName: "robots.txt",
+          source: `User-agent: *\nAllow: /\nSitemap: ${siteOrigin}/sitemap.xml\n`,
+        });
       },
     },
   };

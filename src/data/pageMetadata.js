@@ -1,4 +1,4 @@
-const siteOrigin = "https://akolforlegalservices.com";
+export const siteOrigin = "https://www.als-ss.com";
 
 export const pageMetadata = {
   "/": {
@@ -39,5 +39,6 @@ export function getPageMetadata(pathname) {
   return {
     ...pageMetadata[canonicalPath],
     url: siteOrigin + canonicalPath,
+    image: `${siteOrigin}/akol-logo.jpeg`,
   };
 }

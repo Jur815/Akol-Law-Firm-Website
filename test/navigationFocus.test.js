@@ -22,7 +22,7 @@ function setup() {
   const document = {
     body,
     activeElement: body,
-    location: { origin: "https://akolforlegalservices.com" },
+    location: { origin: "https://example.test" },
     defaultView: view,
     querySelectorAll: () => links,
     getElementById: () => anchor,

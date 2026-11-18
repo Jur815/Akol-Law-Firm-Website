@@ -9,7 +9,12 @@ const redirects = vercel.redirects.map((entry) => ({
   ...entry,
   pattern: new RegExp(`^${entry.source}$`),
 }));
-const nonPagePaths = ["/api/contact", "/API/Contact", "/assets/Team.js", "/favicon.ico", "/Team/unknown", "/unknown"];
+const metadataPlugin = viteConfig.plugins.find(({ name }) => name === "als-static-page-metadata");
+const publicRoutes = ["/", "/about", "/services", "/team", "/contact"];
+const nonPagePaths = [
+  "/api/contact", "/API/Contact", "/assets/Team.js", "/favicon.ico",
+  "/robots.txt", "/sitemap.xml", "/Team/unknown", "/unknown",
+];
 
 test("canonical path normalization preserves page-specific metadata", () => {
   assert.equal(getCanonicalPath("/"), "/");
@@ -19,6 +24,39 @@ test("canonical path normalization preserves page-specific metadata", () => {
     assert.deepEqual(getPageMetadata(mixed), getPageMetadata(path));
   }
   for (const path of nonPagePaths) assert.equal(getCanonicalPath(path), null, path);
+});
+
+test("every public page emits canonical and social metadata on the production domain", () => {
+  assert.deepEqual(Object.keys(pageMetadata), publicRoutes);
+
+  const template = readFileSync(new URL("../index.html", import.meta.url), "utf8");
+  const assets = new Map();
+  const index = { source: template };
+  metadataPlugin.generateBundle.handler.call(
+    { emitFile: ({ fileName, source }) => assets.set(fileName, source) },
+    {},
+    { "index.html": index },
+  );
+
+  const productionOrigin = "https://www.als-ss.com";
+  const expectedUrls = publicRoutes.map((path) => productionOrigin + path);
+  for (const [i, path] of publicRoutes.entries()) {
+    const expectedUrl = expectedUrls[i];
+    const html = path === "/" ? index.source : assets.get(`${path.slice(1)}/index.html`);
+
+    assert.equal(getPageMetadata(path).url, expectedUrl);
+    assert.ok(html.includes(`<link rel="canonical" href="${expectedUrl}"`), path);
+    assert.ok(html.includes(`<meta property="og:url" content="${expectedUrl}"`), path);
+    for (const meta of ['property="og:image"', 'name="twitter:image"']) {
+      assert.ok(html.includes(`<meta ${meta} content="${productionOrigin}/akol-logo.jpeg"`), path);
+    }
+    assert.ok(!html.includes("__PAGE_"), path);
+  }
+
+  const sitemapUrls = [...assets.get("sitemap.xml").matchAll(/<loc>([^<]+)<\/loc>/g)]
+    .map((match) => match[1]);
+  assert.deepEqual(sitemapUrls, expectedUrls);
+  assert.match(assets.get("robots.txt"), /^Sitemap: https:\/\/www\.als-ss\.com\/sitemap\.xml$/m);
 });
 
 test("Vercel permanently redirects all case variants without redirecting canonical URLs", () => {
@@ -46,9 +84,8 @@ test("Vercel permanently redirects all case variants without redirecting canonic
 });
 
 test("local preview redirects aliases and preserves the query before serving canonical HTML", () => {
-  const plugin = viteConfig.plugins.find(({ name }) => name === "als-static-page-metadata");
   let middleware;
-  plugin.configurePreviewServer({ middlewares: { use: (handler) => { middleware = handler; } } });
+  metadataPlugin.configurePreviewServer({ middlewares: { use: (handler) => { middleware = handler; } } });
 
   function request(url) {
     const req = { url };
