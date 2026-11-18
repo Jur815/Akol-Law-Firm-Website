@@ -4,7 +4,7 @@ const resendEndpoint = "https://api.resend.com/emails";
 const rateLimitWindowMs = 15 * 60 * 1000;
 const maxRequestsPerWindow = 5;
 const rateLimitStore = new Map();
-// Keep delivery on the working mailbox until info@als.com is configured for real email.
+// Keep delivery on the working mailbox until info@als-ss.com is configured for real email.
 const defaultRecipientEmail = "info2026akollegalservices@gmail.com";
 
 function sendJson(res, statusCode, payload) {
