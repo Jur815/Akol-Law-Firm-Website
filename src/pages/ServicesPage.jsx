@@ -1,16 +1,10 @@
 import { Link } from "react-router-dom";
 import SectionHeading from "../components/common/SectionHeading";
-import Seo from "../components/common/Seo";
 import { practiceAreas } from "../data/siteData";
 
 export default function ServicesPage() {
   return (
     <section className="section page-section">
-      <Seo
-        title="Sports Law and Legal Services | Akol For Legal Services"
-        description="Explore Akol For Legal Services practice areas, including Sports Law and Governance support for federations, clubs, athletes, administrators, and organisations in South Sudan."
-        path="/services"
-      />
       <div className="container">
         <SectionHeading
           eyebrow="Practice Areas"

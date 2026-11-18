@@ -1,7 +1,6 @@
 import Hero from "../components/home/Hero";
 import { Link } from "react-router-dom";
 import SectionHeading from "../components/common/SectionHeading";
-import Seo from "../components/common/Seo";
 import ServiceCard from "../components/common/ServiceCard";
 import { industries, practiceAreas, strengths, team } from "../data/siteData";
 
@@ -10,7 +9,6 @@ export default function HomePage() {
 
   return (
     <>
-      <Seo />
       <Hero />
 
       <section className="section">

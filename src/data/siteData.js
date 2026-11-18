@@ -15,7 +15,7 @@ const marcoAjouAleu = new URL(
 export const firmContact = {
   name: "Akol For Legal Services (ALS)",
   location: "Juba, South Sudan",
-  // Public-facing placeholder until the als.com mailbox is purchased and configured.
+  // Public address. Form delivery is configured separately in api/contact.js.
   email: "info@als-ss.com",
   phone: "+211 912 374 000",
   whatsappDisplay: "+211 912 374 000",
