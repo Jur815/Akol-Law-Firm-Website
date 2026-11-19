@@ -7,21 +7,31 @@ export const contactFieldLimits = {
 };
 
 const requiredFields = ["name", "email", "phone", "subject", "message"];
+const allowedFields = new Set([...requiredFields, "company"]);
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const phonePattern = /^[+()\d\s.-]{7,32}$/;
 
-export function normalizeContactPayload(payload = {}) {
+function normalizeContactPayload(payload) {
   return {
-    name: String(payload.name ?? "").trim(),
-    email: String(payload.email ?? "").trim().toLowerCase(),
-    phone: String(payload.phone ?? "").trim(),
-    subject: String(payload.subject ?? "").trim(),
-    message: String(payload.message ?? "").trim(),
-    company: String(payload.company ?? "").trim(),
+    name: payload.name?.trim() ?? "",
+    email: payload.email?.trim().toLowerCase() ?? "",
+    phone: payload.phone?.trim() ?? "",
+    subject: payload.subject?.trim() ?? "",
+    message: payload.message?.trim() ?? "",
+    company: payload.company?.trim() ?? "",
   };
 }
 
 export function validateContactPayload(payload = {}) {
+  if (
+    !payload ||
+    typeof payload !== "object" ||
+    Array.isArray(payload) ||
+    Object.entries(payload).some(([field, value]) => !allowedFields.has(field) || typeof value !== "string")
+  ) {
+    return { values: null, errors: {}, isValid: false };
+  }
+
   const values = normalizeContactPayload(payload);
   const errors = {};
 
@@ -41,7 +51,7 @@ export function validateContactPayload(payload = {}) {
     errors.email = "Enter a valid email address.";
   }
 
-  if (values.phone && !phonePattern.test(values.phone)) {
+  if (values.phone && (!phonePattern.test(values.phone) || !/\d/.test(values.phone))) {
     errors.phone = "Enter a valid phone number.";
   }
 

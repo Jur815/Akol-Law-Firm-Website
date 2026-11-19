@@ -1,9 +1,16 @@
+import { isIP } from "node:net";
 import { validateContactPayload } from "../src/utils/contactValidation.js";
 
 const resendEndpoint = "https://api.resend.com/emails";
 const rateLimitWindowMs = 15 * 60 * 1000;
 const maxRequestsPerWindow = 5;
-const rateLimitStore = new Map();
+const maxBodyBytes = 32 * 1024;
+const jsonContentType = /^application\/json(?:\s*;\s*charset\s*=\s*(?:utf-8|"utf-8"))?$/i;
+const rateLimiter = createRateLimiter({
+  windowMs: rateLimitWindowMs,
+  maxRequests: maxRequestsPerWindow,
+  maxEntries: 2048,
+});
 // Keep delivery on the working mailbox until info@als-ss.com is configured for real email.
 const defaultRecipientEmail = "info2026akollegalservices@gmail.com";
 
@@ -15,28 +22,44 @@ function sendJson(res, statusCode, payload) {
 }
 
 function getClientIp(req) {
-  const forwardedFor = req.headers["x-forwarded-for"];
-  if (typeof forwardedFor === "string" && forwardedFor.length > 0) {
-    return forwardedFor.split(",")[0].trim();
+  if (process.env.VERCEL === "1") {
+    // Use Vercel's platform-supplied client address, never the proxy socket.
+    const forwardedFor = req.headers["x-vercel-forwarded-for"];
+    const clientIp = typeof forwardedFor === "string" ? forwardedFor.trim() : "";
+    return isIP(clientIp) ? clientIp : null;
   }
 
-  return req.socket?.remoteAddress || "unknown";
+  const clientIp = req.socket?.remoteAddress ?? "";
+  return isIP(clientIp) ? clientIp : null;
 }
 
-function isRateLimited(key) {
-  const now = Date.now();
-  const record = rateLimitStore.get(key);
+function createRateLimiter({ windowMs, maxRequests, maxEntries }) {
+  const clients = new Map();
+  let nextCleanup = 0;
 
-  if (!record || now > record.resetAt) {
-    rateLimitStore.set(key, {
-      count: 1,
-      resetAt: now + rateLimitWindowMs,
-    });
-    return false;
-  }
+  return function checkRateLimit(clientIp, now = Date.now()) {
+    if (now >= nextCleanup) {
+      for (const [ip, record] of clients) {
+        if (record.resetAt <= now) clients.delete(ip);
+      }
+      nextCleanup = now + windowMs;
+    }
 
-  record.count += 1;
-  return record.count > maxRequestsPerWindow;
+    const record = clients.get(clientIp);
+    if (record && now < record.resetAt) {
+      if (record.count >= maxRequests) {
+        return Math.ceil((record.resetAt - now) / 1000);
+      }
+
+      record.count += 1;
+      return null;
+    }
+
+    clients.delete(clientIp);
+    if (clients.size >= maxEntries) clients.delete(clients.keys().next().value);
+    clients.set(clientIp, { count: 1, resetAt: now + windowMs });
+    return null;
+  };
 }
 
 function escapeHtml(value) {
@@ -89,22 +112,58 @@ function htmlEmail(values) {
   `;
 }
 
+class BodyTooLargeError extends Error {}
+
+function checkBodySize(bytes) {
+  if (bytes > maxBodyBytes) throw new BodyTooLargeError();
+}
+
+function parseBodyBytes(bytes) {
+  checkBodySize(bytes.length);
+  return JSON.parse(new TextDecoder("utf-8", { fatal: true }).decode(bytes));
+}
+
 async function readBody(req) {
-  if (req.body && typeof req.body === "object") {
-    return req.body;
+  const contentLength = req.headers["content-length"];
+  if (contentLength !== undefined) {
+    if (typeof contentLength !== "string" || !/^\d+$/.test(contentLength)) {
+      throw new Error("Invalid Content-Length");
+    }
+    checkBodySize(Number(contentLength));
   }
 
-  if (typeof req.body === "string") {
-    return JSON.parse(req.body);
+  // Vercel may pre-buffer the request and replay the original bytes via read().
+  if (req.readableEnded && typeof req.read === "function") {
+    const replay = req.read(maxBodyBytes + 1);
+    if (replay !== null) return parseBodyBytes(Buffer.from(replay));
+  }
+
+  const hasBodyGetter = Boolean(Object.getOwnPropertyDescriptor(req, "body")?.get);
+  const body = req.body;
+  if (body !== undefined) {
+    if (Buffer.isBuffer(body)) return parseBodyBytes(body);
+    if (typeof body === "string" && !hasBodyGetter) {
+      checkBodySize(Buffer.byteLength(body));
+      return JSON.parse(body);
+    }
+
+    // When a runtime supplies only a parsed value, the wire bytes are unavailable.
+    checkBodySize(Buffer.byteLength(JSON.stringify(body)));
+    return body;
   }
 
   const chunks = [];
-  for await (const chunk of req) {
-    chunks.push(chunk);
+  let size = 0;
+  for await (const chunk of req.iterator({ destroyOnReturn: false })) {
+    const bytes = Buffer.from(chunk);
+    size += bytes.length;
+    if (size > maxBodyBytes) {
+      req.resume();
+      throw new BodyTooLargeError();
+    }
+    chunks.push(bytes);
   }
-
-  const rawBody = Buffer.concat(chunks).toString("utf8");
-  return rawBody ? JSON.parse(rawBody) : {};
+  return parseBodyBytes(Buffer.concat(chunks, size));
 }
 
 export default async function handler(req, res) {
@@ -118,29 +177,49 @@ export default async function handler(req, res) {
   }
 
   if (req.method !== "POST") {
+    res.setHeader("Allow", "POST, OPTIONS");
     sendJson(res, 405, { message: "Method not allowed." });
     return;
   }
 
-  if (isRateLimited(getClientIp(req))) {
+  const clientIp = getClientIp(req);
+  const retryAfter = clientIp ? rateLimiter(clientIp) : null;
+  if (retryAfter !== null) {
+    res.setHeader("Retry-After", String(retryAfter));
     sendJson(res, 429, {
       message: "Too many requests. Please wait before trying again.",
     });
     return;
   }
 
+  const contentType = req.headers["content-type"];
+  const contentEncoding = req.headers["content-encoding"] ?? "identity";
+  if (
+    typeof contentType !== "string" ||
+    !jsonContentType.test(contentType.trim()) ||
+    typeof contentEncoding !== "string" ||
+    contentEncoding.trim().toLowerCase() !== "identity"
+  ) {
+    sendJson(res, 415, { message: "Send the request as uncompressed UTF-8 application/json." });
+    return;
+  }
+
   let payload;
   try {
     payload = await readBody(req);
-  } catch {
-    sendJson(res, 400, { message: "Invalid JSON request body." });
+  } catch (error) {
+    if (error instanceof BodyTooLargeError) {
+      sendJson(res, 413, { message: "Request body exceeds 32 KiB." });
+    } else {
+      sendJson(res, 400, { message: "Invalid JSON request body." });
+    }
     return;
   }
 
   const validation = validateContactPayload(payload);
 
-  if (validation.values.company) {
-    sendJson(res, 202, { message: "Request accepted." });
+  if (!validation.values) {
+    sendJson(res, 400, { message: "Expected a JSON object with contact fields as strings." });
     return;
   }
 
@@ -149,6 +228,11 @@ export default async function handler(req, res) {
       message: "Please correct the highlighted fields.",
       errors: validation.errors,
     });
+    return;
+  }
+
+  if (validation.values.company) {
+    sendJson(res, 202, { message: "Request accepted." });
     return;
   }
 
@@ -192,10 +276,10 @@ export default async function handler(req, res) {
 }
 
 export const internals = {
+  createRateLimiter,
   defaultRecipientEmail,
   escapeHtml,
   htmlEmail,
-  isRateLimited,
   readBody,
   textEmail,
 };
