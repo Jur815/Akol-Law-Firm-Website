@@ -11,6 +11,25 @@ const initialFormData = {
   message: "",
 };
 const fieldOrder = Object.keys(initialFormData);
+const honeypotName = "als_contact_website";
+
+function retryMessage(retryAfter) {
+  const seconds = retryAfter && /^\d+$/.test(retryAfter)
+    ? Number(retryAfter)
+    : Math.ceil((Date.parse(retryAfter) - Date.now()) / 1000);
+  let wait = "in a few minutes";
+
+  if (Number.isFinite(seconds) && seconds > 0) {
+    if (seconds < 60) {
+      wait = `in ${seconds} ${seconds === 1 ? "second" : "seconds"}`;
+    } else {
+      const minutes = Math.ceil(seconds / 60);
+      wait = `in ${minutes} ${minutes === 1 ? "minute" : "minutes"}`;
+    }
+  }
+
+  return `Too many requests. Your entries are still in the form. Please try again ${wait}.`;
+}
 
 function FieldError({ name, error }) {
   return error ? (
@@ -60,9 +79,15 @@ export default function ContactPage() {
     event.preventDefault();
     if (formStatus.type === "loading") return;
 
+    const honeypot = event.currentTarget.elements.namedItem(honeypotName);
+    const { name, email, phone, service, message } = formData;
     const validation = validateContactPayload({
-      ...formData,
-      subject: `Legal Consultation Request - ${formData.service}`,
+      name,
+      email,
+      phone,
+      subject: `Legal Consultation Request - ${service}`,
+      message,
+      company: honeypot.value,
     });
     if (!validation.isValid) {
       showFieldErrors(validation.errors);
@@ -84,6 +109,15 @@ export default function ContactPage() {
         },
         body: JSON.stringify(validation.values),
       });
+
+      if (response.status === 429) {
+        throw new Error(retryMessage(response.headers.get("Retry-After")));
+      }
+
+      if (response.status === 202) {
+        honeypot.value = "";
+        throw new Error("Your request could not be sent. Please try again or contact the firm directly.");
+      }
 
       const result = await response.json().catch(() => null);
 
@@ -164,6 +198,8 @@ export default function ContactPage() {
               formStatus.message ? "contact-form-status contact-form-note" : "contact-form-note"
             }
           >
+            <input type="text" name={honeypotName} autoComplete="off" tabIndex={-1} hidden />
+
             <div className="form-group">
               <label htmlFor="contact-name">Full Name</label>
               <input

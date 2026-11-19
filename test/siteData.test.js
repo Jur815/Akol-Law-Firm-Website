@@ -123,8 +123,8 @@ test("contact API preserves sender and recipient settings and uses the visitor's
 
   const req = {
     method: "POST",
-    headers: {},
-    socket: { remoteAddress: "contact-api-success-test" },
+    headers: { "content-type": "application/json" },
+    socket: { remoteAddress: "192.0.2.1" },
     body: {
       name: "Jane Client",
       email: "jane@example.com",
@@ -191,8 +191,8 @@ test("contact API reports missing email service configuration", async () => {
 
   const req = {
     method: "POST",
-    headers: {},
-    socket: { remoteAddress: "contact-api-config-test" },
+    headers: { "content-type": "application/json" },
+    socket: { remoteAddress: "192.0.2.2" },
     body: {
       name: "Jane Client",
       email: "jane@example.com",
