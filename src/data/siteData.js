@@ -21,7 +21,7 @@ export const firmContact = {
   name: "Akol For Legal Services (ALS)",
   location: "Juba, South Sudan",
   // Public address. Form delivery is configured separately in api/contact.js.
-  email: "info@als-ss.com",
+  email: "marco.akolssd@gmail.com",
   phone: "+211 912 374 000",
   whatsappDisplay: "+211 912 374 000",
   whatsapp: "211912374000",

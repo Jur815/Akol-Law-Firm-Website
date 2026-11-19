@@ -5,7 +5,7 @@ import { firmContact, practiceAreas, team } from "../src/data/siteData.js";
 import { validateContactPayload } from "../src/utils/contactValidation.js";
 
 test("uses the official contact details", () => {
-  assert.equal(firmContact.email, "info@als-ss.com");
+  assert.equal(firmContact.email, "marco.akolssd@gmail.com");
   assert.equal(firmContact.whatsappDisplay, "+211 912 374 000");
   assert.equal(firmContact.whatsapp, "211912374000");
 });
@@ -103,7 +103,7 @@ test("contact form defaults to the official temporary recipient email", () => {
   );
 });
 
-test("contact API sends successful submissions", async () => {
+test("contact API preserves sender and recipient settings and uses the visitor's Reply-To", async () => {
   const originalFetch = globalThis.fetch;
   const originalEnv = {
     apiKey: process.env.RESEND_API_KEY,
@@ -149,8 +149,20 @@ test("contact API sends successful submissions", async () => {
 
     assert.equal(res.statusCode, 200);
     assert.equal(JSON.parse(res.body).message, "Message sent successfully.");
+    assert.equal(sentPayload.from, "Akol For Legal Services <website@example.com>");
     assert.equal(sentPayload.to, "info2026akollegalservices@gmail.com");
     assert.equal(sentPayload.reply_to, "jane@example.com");
+
+    process.env.CONTACT_RECIPIENT_EMAIL = "configured-recipient@example.com";
+    await handler({
+      ...req,
+      body: { ...req.body, email: "another-visitor@example.com" },
+    }, res);
+
+    assert.equal(res.statusCode, 200);
+    assert.equal(sentPayload.from, "Akol For Legal Services <website@example.com>");
+    assert.equal(sentPayload.to, "configured-recipient@example.com");
+    assert.equal(sentPayload.reply_to, "another-visitor@example.com");
 
     globalThis.fetch = async () => {
       throw new TypeError("Network unavailable");
