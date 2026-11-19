@@ -7,6 +7,11 @@ import {
   Trophy,
 } from "lucide-react";
 
+const marcoAkolDengMawien = new URL(
+  "../assets/team/marco-akol-deng-mawien.jpg",
+  import.meta.url,
+).href;
+
 const marcoAjouAleu = new URL(
   "../assets/team/marco-ajou-aleu.webp",
   import.meta.url,
@@ -113,6 +118,8 @@ export const team = [
     role: "Founder & Chief Executive Officer",
     credentials: "Advocate & Commissioner for Oaths",
     professionalWebsite: "https://marcomawien.org/",
+    image: marcoAkolDengMawien,
+    imageSize: { width: 396, height: 528 },
     shortBio:
       "Marco Akol Deng Mawien is the Founder and Chief Executive Officer of Akol For Legal Services, an Advocate and Commissioner for Oaths with more than a decade of legal experience. He is also an experienced sports administrator and one of the founding members of the South Sudan Football Federation.",
     bio: [

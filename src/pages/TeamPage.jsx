@@ -60,10 +60,10 @@ function ExecutiveProfile({ member }) {
           <img
             src={member.image}
             alt={member.name}
-            className="profile-portrait profile-photo"
+            className={`profile-portrait profile-photo${member.imageSize ? " profile-photo-natural" : ""}`}
             loading="lazy"
-            width="132"
-            height="132"
+            width={member.imageSize?.width ?? 132}
+            height={member.imageSize?.height ?? 132}
           />
         ) : (
           <div className="profile-portrait" aria-hidden="true">
