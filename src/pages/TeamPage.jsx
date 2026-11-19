@@ -84,6 +84,17 @@ function ExecutiveProfile({ member }) {
             <Link to="/contact" className="btn btn-outline">
               Contact the Firm
             </Link>
+            {member.professionalWebsite && (
+              <a
+                href={member.professionalWebsite}
+                className="btn btn-outline"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Visit Professional Website (opens in a new tab)"
+              >
+                Visit Professional Website
+              </a>
+            )}
           </div>
         </div>
       </div>

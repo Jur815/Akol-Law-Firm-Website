@@ -112,6 +112,7 @@ export const team = [
     slug: "marco-akol-deng",
     role: "Founder & Chief Executive Officer",
     credentials: "Advocate & Commissioner for Oaths",
+    professionalWebsite: "https://marcomawien.org/",
     shortBio:
       "Marco Akol Deng Mawien is the Founder and Chief Executive Officer of Akol For Legal Services, an Advocate and Commissioner for Oaths with more than a decade of legal experience. He is also an experienced sports administrator and one of the founding members of the South Sudan Football Federation.",
     bio: [
